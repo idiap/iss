@@ -44,7 +44,7 @@ function Split
         fi
         if [[ ! -e $htsConfig ]]
         then
-    	    echo Please run init-train.sh to generate $htsConfig
+            echo Please run init-train.sh to generate $htsConfig
         fi
 
         ;;
@@ -70,27 +70,32 @@ function Split
         esac
         found=1;
         echo $found > split2merge.temp
-        for n in `cat ${alignList}-temp`; do
-            if [ ! -e $n ]; then
+        for n in `cat ${alignList}-temp`
+        do
+            if [ ! -e $n ]
+            then
                 found=0;
             fi
         done
 
-        if [ $found -eq 0 ] ; then
+        if [ $found -eq 0 ]
+        then
             cat $alignList-temp | xargs -n 1 dirname | sort -u | xargs -n 1 mkdir -p
             $feacat -i $activationFile -op htk -ol $alignList-temp
         fi
         rm $alignList-temp
 
- 	if [ ! -e $alignModelDir/$model_name ]; then
-	       mkdir models
-	       $createInitialModels delta $alignModelDir/hmm-list.txt models/
-	       $createHTKHMMS models/ $alignModelDir/hmm-list.txt $alignModelDir/$model_name
-	fi
-	if [ ! -e $alignModelDir/$phonelist ]; then
-	    cp $alignModelDir/hmm-list.txt $alignModelDir/$phonelist
-	    echo "sp" >> $alignModelDir/$phonelist
-	fi
+        if [ ! -e $alignModelDir/$model_name ]
+        then
+            mkdir models
+            $createInitialModels delta $alignModelDir/hmm-list.txt models/
+            $createHTKHMMS models/ $alignModelDir/hmm-list.txt $alignModelDir/$model_name
+        fi
+        if [ ! -e $alignModelDir/$phonelist ]
+        then
+            cp $alignModelDir/hmm-list.txt $alignModelDir/$phonelist
+            echo "sp" >> $alignModelDir/$phonelist
+        fi
         ;;
     *)
         echo "Decoder $decoder cannot be used to align"
@@ -110,13 +115,13 @@ function Split
     [[ $fileListColumns == 1 ]] && opts+=( -l '*' )
     $hled $htsOptions $opts align-led.txt $wordMLF
 }
-	
+
 function Array
 {
 
     case $decoder in
     HVite)
-	opts=(
+        opts=(
             -C $htsConfig $htsOptions $alignOptions 
             -o SW
             -a
@@ -170,7 +175,7 @@ function Array
             $hvite_scalar $opts $mainDict $alignModelDir/$phonelist
             ;;
         esac
-	
+        
         mv /dev/shm/$alignMLF.$grid0Task.$$ $alignMLF.$grid0Task
 
         for n in `cut -d "=" -f 1 deal/$alignList.$grid0Task`

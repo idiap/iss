@@ -267,10 +267,8 @@ decodeCD=${DECODE_CD:-0}
 scoreReference=${SCORE_REFERENCE:-$wordMLF}
 decodeWordList=${DECODE_WORDS:-wordlist.txt}
 
-# Prepare_MLP
-#seed=${SEED:-$phoneSetCSV}
+# InitMLP
 seed=${SEED:-random.bin}
-createTriphonePfile=${CREATE_TRIPHONE_BIN:-$binDir/mlf2pfile_triphone.pl}
 createTriphonePfileSpk=${CREATE_TRIPHONE_BIN_SPK:-$binDir/mlf2pfile_triphone_spk.pl}
 feacat=${FEACAT:-$(which feacat)}
 labcat=${LABCAT:-$(which labcat)}
@@ -282,7 +280,8 @@ targetTST=targetTST.pfile
 featTRN=${FEAT_TRN:-$featName-TRN.pfile}
 featDEV=${FEAT_DEV:-$featName-DEV.pfile}
 featTST=${FEAT_TST:-$featName-TST.pfile}
-if [ ! -z ${FEAT_NAME2} ]; then
+if [ ! -z ${FEAT_NAME2} ]
+then
     featTRN2=${FEAT_NAME2}-TRN.pfile
     featDEV2=${FEAT_NAME2}-DEV.pfile
     featTST2=${FEAT_NAME2}-TST.pfile
@@ -361,6 +360,7 @@ mlpTandemTrainSent=${MLP_TANDEM_TRAIN_SENT:-0}
 mlpTandemTest=${MLP_TANDEM_TEST:-0}
 mlpTandemStats=${MLP_TANDEM_STATS:-mlp-tandem-stats}
 pcaThreshold=${PCA_THRESHOLD:-0.99}
+pcaFeatDimension=${PCA_FEAT_DIM:-$featDimension}
 
 #input
 tstList=${TST_LIST:-tst.list}

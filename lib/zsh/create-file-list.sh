@@ -33,25 +33,25 @@ htkList=$1
 echo Generating $htkList from $fileList
 case $fileListColumns in
 '1')
-	while read file 
+	while read file
 	do
-       	feats=$featsDir/$featName/$file.htk
-		echo $feats >> $htkList
-	done < $fileList
+       	    feats=$featsDir/$featName/$file.htk
+	    echo $feats
+	done < $fileList > $htkList
     ;;
 '2')
-	while read ID file 
+	while read ID file
 	do
-       	feats=$ID"="$featsDir/$featName/$file.htk
-		echo $feats >> $htkList
-	done < $fileList
-    ;;
+       	    feats=$ID"="$featsDir/$featName/$file.htk
+	    echo $feats
+	done < $fileList > $htkList
+        ;;
 '4')
 	while read ID file begin end
 	do
-       	feats=$ID"="$featsDir/$featName/$file.htk[$begin,$end]
-		echo $feats >> $htkList
-	done < $fileList
+       	    feats=$ID"="$featsDir/$featName/$file.htk[$begin,$end]
+	    echo $feats
+	done < $fileList > $htkList
 	;;
 *)
     echo "Don't know how to handle $fileListColumns column file lists"
