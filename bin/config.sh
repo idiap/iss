@@ -375,9 +375,9 @@ retrainInSuffix=${RETRAIN_IN_SUFFIX:-}
 retrainOutSuffix=${RETRAIN_OUT_SUFFIX:-}
 
 #MLP_decode
-hvite_kl=${HVITE_KL:-/idiap/user/aradilla/my_htk/bin/HVite_kl}
-hvite_rkl=${HVITE_RKL:-/idiap/user/aradilla/my_htk/bin/HVite_rkl}
-hvite_skl=${HVITE_SKL:-/idiap/user/aradilla/my_htk/bin/HVite_skl}
+hvite_kl=${HVITE_KL:-$(which HVite_kl)}
+hvite_rkl=${HVITE_RKL:-$(which HVite_rkl)}
+hvite_skl=${HVITE_SKL:-$(which HVite_skl)}
 initHMM=$binDir/init_HMM.py
 createInitialModels=${CREATE_INITIAL_MODELS:-$binDir/create_initial_models.py}
 createHTKHMMS=$binDir/get_htk_hmm.py
