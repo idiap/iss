@@ -117,9 +117,16 @@ function Split
     do
         cat /dev/null > deal/$adaptList.$i
         foreach spk in $(cat deal/$adaptListSpk.$i)
-    do
-        grep "$spk/" $adaptList >> deal/$adaptList.$i
-    done
+        do
+            case $adaptPattern in
+            '%%%/*')
+                grep "$spk/" $adaptList >> deal/$adaptList.$i
+                ;;
+            *)
+                grep "^$spk" $adaptList >> deal/$adaptList.$i
+                ;;
+            esac
+        done
     done
 }
 
@@ -182,9 +189,18 @@ function Array
     fi
     
     # -J cannot be last option, hence, add the -h options now to be last
-    opts+=(
-        -h $adaptPattern
-    )
+    case $adaptPattern in
+    '%%%/*')
+        opts+=(
+            -h $adaptPattern
+        )
+        ;;
+    *)
+        opts+=(
+            -h "%%%*"
+        )
+        ;;
+    esac
     $herest $htsOptions $opts $adaptModelDir/hmm-list.txt
 }
      
