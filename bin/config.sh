@@ -106,6 +106,7 @@ aux2eps=${AUX2EPS:-$(which aux2eps.pl)}
 #input
 targetKind=${TARGET_KIND:-USER}
 featName=${FEAT_NAME:-$targetKind} # merge with targetName?
+featExt=${FEAT_EXTENSION:-htk}
 audioName=${AUDIO_NAME:-""}
 fileList=${FILE_LIST:-file-list}
 fileListColumns=$(tail -n 1 $fileList | wc -w)
@@ -262,6 +263,7 @@ decodeTransExt=${DECODE_TRANS_EXT:-mllr}
 decodePattern=${DECODE_PATTERN:=$adaptPattern}
 decodeBlockSize=${DECODE_BLOCK_SIZE:=$decodeBlockSize}
 decodeCD=${DECODE_CD:-0}
+decodeLatices=${DECODE_LATICES:-""}
 
 # Score
 scoreReference=${SCORE_REFERENCE:-$wordMLF}

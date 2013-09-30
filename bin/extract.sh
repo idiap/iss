@@ -22,6 +22,7 @@ $audioDir
 $audioName
 $featsDir
 $featName
+$featExt
 $hcopyConfig
 creates:
 $extractList
@@ -50,7 +51,7 @@ function Split
             while read file 
             do
                 audio=$audioDir/$audioName/$file.wav
-                feats=$featsDir/$featName/$file.htk
+                feats=$featsDir/$featName/$file.$featExt
                 echo $audio $feats
             done < $fileList | sort -u > $extractList
             ;;
@@ -58,7 +59,7 @@ function Split
             while read id file 
             do
                 audio=$audioDir/$audioName/$file.wav
-                feats=$featsDir/$featName/$file.htk
+                feats=$featsDir/$featName/$file.$featExt
                 echo $audio $feats
             done < $fileList | sort -u > $extractList
             ;;
@@ -66,7 +67,7 @@ function Split
             while read id file begin end
             do
                 audio=$audioDir/$audioName/$file.wav
-                feats=$featsDir/$featName/$file.htk
+                feats=$featsDir/$featName/$file.$featExt
                 echo $audio $feats
             done < $fileList | sort -u > $extractList
             ;;

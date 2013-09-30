@@ -126,6 +126,11 @@ function Split
         ;;
     esac
 
+    if [[ $decodeLatices != "" ]]
+    then
+        mkdir -p $decodeLatices
+    fi
+
     # Train scripts for array stage
     mkdir -p deal
     deal.sh $decodeList deal/$decodeList.{01..$nJobs}
@@ -239,6 +244,14 @@ function Array
         then
             opts+=(
                 -o $decodeOutput
+            )
+        fi
+
+        if [[ $decodeLatices != "" ]]
+        then
+            opts+=(
+                -l $decodeLatices
+                -z $decodeLatices
             )
         fi
 

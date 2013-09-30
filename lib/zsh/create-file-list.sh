@@ -35,21 +35,21 @@ case $fileListColumns in
 '1')
 	while read file
 	do
-       	    feats=$featsDir/$featName/$file.htk
+       	    feats=$featsDir/$featName/$file.$featExt
 	    echo $feats
 	done < $fileList > $htkList
     ;;
 '2')
 	while read ID file
 	do
-       	    feats=$ID"="$featsDir/$featName/$file.htk
+       	    feats=$ID"="$featsDir/$featName/$file.$featExt
 	    echo $feats
 	done < $fileList > $htkList
         ;;
 '4')
 	while read ID file begin end
 	do
-       	    feats=$ID"="$featsDir/$featName/$file.htk[$begin,$end]
+       	    feats=$ID"="$featsDir/$featName/$file.$featExt[$begin,$end]
 	    echo $feats
 	done < $fileList > $htkList
 	;;
