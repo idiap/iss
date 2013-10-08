@@ -48,8 +48,8 @@ logDir=log
 mkdir -p $logDir
 
 # Global sort of stuff
-binDir=$(dirname $0)
-baseDir=$(dirname $binDir)
+baseDir=$ISSROOT
+binDir=$baseDir/bin
 libDir=$baseDir/lib
 fpath=( $libDir/zsh $fpath )
 nJobs=${N_JOBS:-20}
