@@ -21,6 +21,8 @@ convert-audio.sh [-r -t <target-directory>] <source-directory>
 -c  [sph] Source encoding.
 -p  [.]   Pattern to match in source file / path.
 -o  [see output] Options to pass to sox to read raw files.
+-w  [see output] Options to pass to sox to write files.
+-E  [see output] Sox effect options (e.g., "remix 1" for channel selection)
 -r  Really do it, rather than just check it looks right.
 EOF
 exit 0
@@ -39,8 +41,10 @@ targetExt=wav
 sourceEnc=sph
 pattern=.
 
-# For raw files
+# For raw files, output and effects
 rawOpts="-r 16000 -s -2 -x"
+writeOpts=""
+effectOpts=""
 
 # Walk the command line
 while (( $# > 0 ))
@@ -72,6 +76,14 @@ do
         shift
         rawOpts=$1
         ;;
+    '-w')
+        shift
+        writeOpts=$1
+        ;;
+    '-E')
+        shift
+        effectOpts=$1
+        ;;
     *)
         sourceDir=$1
         ;;
@@ -84,6 +96,8 @@ echo Source: $sourceDir/\*/\*.$sourceExt
 echo Target: $targetDir/\*/\*.$targetExt
 echo Encoding: $sourceEnc
 echo Raw opts: $rawOpts
+echo Write opts: $writeOpts
+echo Effect opts: $effectOpts
 echo Pattern: $pattern
 if [[ ${really:=0} != 1 ]]
 then
@@ -108,6 +122,9 @@ do
     # Do the write
     mkdir -p $targetPath
     case $sourceEnc in
+    'wav')
+        $sox $sourceFile $writeOpts $targetFile $effectOpts
+        ;;
     'sph')
         # Sphere (WSJ etc.)
         $wdecode -f -o pcm $sourceFile $tmpFile
