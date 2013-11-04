@@ -4,7 +4,8 @@
 #
 # See the file COPYING for the licence associated with this software.
 #
-# Creates the dictionary and checks if it uses the complete phonelist also given as argument
+# Creates the dictionary and checks if it uses the complete phonelist
+# also given as argument
 #
 # David Imseng, October 2010
 # Milos Cernak, September 2013
@@ -13,7 +14,7 @@
 # Check the usage
 if [[ $# < 3 ]]
 then
-    echo "Usage: createDict input flat main [phonelist]"
+    echo "Usage: create-dict.sh input flat main [phonelist]"
     exit 1
 fi
 
@@ -22,8 +23,9 @@ source $(dirname $0)/config.sh
 
 autoload create-phone-list.sh
 
-#Creating the Dict
-if [ ! -z $sampaMap ]; then
+# Creating the Dict
+if [ ! -z $sampaMap ]
+then
     $binDir/convert-dict.py \
     -i ${1} \
     -m $sampaMap \
@@ -36,7 +38,7 @@ else
     	> ${2}.unsorted
 fi
 
-#ensure the sorting
+# Ensure the sorting
 LC_ALL=C sort ${2}.unsorted > ${2}.raw
 rm ${2}.unsorted
 
@@ -70,7 +72,7 @@ else
     $hdman -m -i ${2} ${2}.raw
 fi
 
-#create dictionary to fix silence 
+# Create dictionary to fix silence 
 echo AS sp sil > global.ded
 echo MP sil sil sp >> global.ded
 echo MP sil sil sil >> global.ded

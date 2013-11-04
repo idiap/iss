@@ -448,28 +448,3 @@ binTieMLF=${BIN_TIE_MLF:-$binDir/tieMLF.rb}
 tiedMLF=${TIED_MFL:-$alignMLF.tied}
 diphModelDir=${DI_MODEL_DIR:-hmm-dimap}
 dtmModelDir=${DI_TRI_MODEL_DIR:-hmm-di3map}
-
-# HTS
-# Speech analysis parameters
-minF0=${MINF0:-66}                # F0 search range
-maxF0=${MAXF0:-1000}
-sampFreq=${SAMPFREQ:-16000}       # Sampling frequency (16kHz)
-frameShift=${FRAMESHIFT:-5}       # Frame shift in point (0.005s)
-mgcOrder=${MGCORDER:-24}          # order of MCEP analysis
-bndapOrder=${BNDAPORDER:-21}      # order of band aperiodicity
-
-# Speech synthesis parameters
-alpha=${ALPHA:-0.42}
-fftLen=${FFTLEN:-1024}
-genType=${GENTYPE:-0}
-synthesisTrainingDir=${SYNTHESIS_TRAINING_DIR:-../train}
-synthesisLabelDir=${SYNTHESIS_LABEL_DIR:-../test-labels}
-synthesizer=${SYNTHESIZER:-HMGenS}
-hts_engine_straight=${HTS_ENGINE_STRAIGHT:-$(which hts_engine_straight)}
-
-# Training
-nPhonemes=${NPHONEMES:-41}
-sentenceDelimiter=${SENTENCE_DELIMITER:-/J}
-reContextClustering=${RECLUSTERING:-5}
-ttsContext=${TTS_CONTEXT:-full}
-
