@@ -110,7 +110,7 @@ function Array
             exit 1
         fi
         source $extracterConfig
-        export ASRFactory_Source=SndFile
+        # export ASRFactory_Source=SndFile
         echo Running $extracter
         $extracter -f deal/$extractList.$grid0Task
         ;;
@@ -128,6 +128,16 @@ function Array
         echo Unknown extraction tool: $extract
         exit 1
     esac
+}
+
+function Merge
+{
+    # Run global normalisation of the TTS features
+    if [[ $extract == 'tts' ]]
+    then
+        echo Running TTS extracter global normalisation
+        normalise.sh
+    fi
 }
 
 # Grid
