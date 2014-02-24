@@ -9,37 +9,41 @@
 #   David Imseng, November 2010
 #
 
-#
-# Config file for HTS scripts
-#
-# The general syntax is
-#
-#  var=${VAR:-default}
-#
-# which sets shell variable $var to the environment variable $VAR if
-# set, and the default value otherwise.  In the case where $var is an
-# array, you can say:
-#
-#  var=${VAR:-"default1 default2"}; var=($=var)
-#
-# where the ${=var} construct splits the string on whitespace like
-# some other shells do.  A bit messy though.
-#
-# Some naming conventions:
-#
-#  train-list.txt    List of training files
-#  decode-list.txt   List of decoding files
-#  ...etc.
-#
-#  dir/mono-list.txt Phone list
-#  dir/hmm-list.txt  Model list
-#  dir/mmf.txt       Models
-#  dir/mmf-1.bin     Mixture models (during training; eval is txt)
-#  dir/stats.txt     Occupation statistics
-#  dir/trees.txt     Decision trees
-#
-# so in general you only need to know the model directory.
-#
+##
+## @author Phil Garner, October 2010
+## @author David Imseng, November 2010
+## @file
+##
+## Config file for HTS scripts
+##
+## The general syntax is
+##
+##     var=${VAR:-default}
+##
+## which sets shell variable $var to the environment variable $VAR if
+## set, and the default value otherwise.  In the case where $var is an
+## array, you can say:
+##
+##     var=${VAR:-"default1 default2"}; var=($=var)
+##
+## where the ${=var} construct splits the string on whitespace like
+## some other shells do.  A bit messy though.
+##
+## Some naming conventions:
+##
+##     train-list.txt    List of training files
+##     decode-list.txt   List of decoding files
+##     ...etc.
+##
+##     dir/mono-list.txt Phone list
+##     dir/hmm-list.txt  Model list
+##     dir/mmf.txt       Models
+##     dir/mmf-1.bin     Mixture models (during training; eval is txt)
+##     dir/stats.txt     Occupation statistics
+##     dir/trees.txt     Decision trees
+##
+## so in general you only need to know the model directory.
+##
 echo script: ${this:-undefined}
 echo config: $0
 

@@ -9,9 +9,29 @@
 #   David Imseng, November 2010
 #
 
-#
-# Allow script to run on the grid
-#
+##
+## @author Phil Garner
+## @author David Imseng
+## @file
+##
+## Allow script to run on the grid.  The general idea is:
+## * If `$USE_GE` is set, we try to run in parallel on the grid.
+## * If `$USE_GE` is not set, we try to run in parallel on one machine.
+## * If we are not on the grid, we submit ourself and exit.
+## * If we are on the grid, call the right part of the script.
+##
+## This GE system uses a file to track job dependencies.  The GE ID
+## returned by qsub is placed in the file `$jobFile`.  This file is
+## checked before submitting and the contents added to the `-hold_jid`
+## list.
+##
+## There are two job types: `serial` and `array`.  Serial is just a
+## single job that runs and finishes.  Array jobs are actually
+## submitted as (at least) three jobs.  The array jobs have
+## `$GRID_MODE` mode set to `split`, `array` and `merge` respectively;
+## the final two can be iterated.  The ones with mode `array` are
+## themselves parallel jobs.
+##
 
 # Print help
 if [[ "$HELP" == 1 ]] && [[ "$(whence usage)" == "usage" ]]
@@ -66,18 +86,6 @@ function submit
 qsub $geOpts $* | cut -d" " -f3 | cut -d. -f1
 
 
-#
-# This GE system uses a file to track job dependencies.  The GE ID
-# returned by qsub is placed in the file $jobFile.  This file is
-# checked before submitting and the contents added to the -hold_jid
-# list.
-#
-# There are two job types: serial and array.  Serial is just a single
-# job that runs and finishes.  Array jobs are actually submitted as
-# (at least) three jobs.  The array jobs have GRID_MODE mode set to
-# split, array and merge respectively; the final two can be iterated.
-# The ones with mode "array" are themselves parallel jobs.
-#
 if [[ $useGE = 1 ]]
 then
     if [[ $jobID = 0 ]]

@@ -7,6 +7,7 @@
 # Author(s):
 #   Phil Garner, May 2012
 #
+
 this=$0
 source $(dirname $0)/config.sh
 source $(dirname $0)/grid.sh

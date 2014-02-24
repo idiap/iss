@@ -16,7 +16,7 @@ this=$0
 function usage
 cat <<EOF
 This is $0
-\$DECODE_DICT: dictionary that contains all the words that are used
+\$FLAT_DICT: dictionary that contains all the words that are used
                (no transcription needed)
 \$SCORE_REFERENCE: reference to perform the scoring
 \$DECODE_MLF: system output 
