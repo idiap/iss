@@ -14,7 +14,14 @@
 
 * Sphinx2
 * Afrikaans
+
+ Phone set for data received from South Afrikaan University, in turn attributed
+ to the HLT group at Meraka, and especially Dr. Febe de Wet.
+
 * Afrikaans-Dutch
+
+ Union of Afrikaans and Dutch (merge)
+
 * ARPAbet
 
  Used in WSJ amongst others.
@@ -30,13 +37,24 @@
  The CMU dictionary with stress marks removed
 
 * CGN-Dutch
+
+ Phoneset for the Dutch data based called CGN:
+ http://lands.let.ru.nl/cgn/ehome.htm
+
 * AMI-v0
 
  The phone set used in the AMI & AMIDA projects.  It's basically GAM with dx
  removed.
 
 * HIWIRE
+
+ Phoneset for HIWIRE:
+ http://catalog.elra.info/product_info.php?products_id=1088
+
 * Isizulu
+
+ Phoneset also received from South African university
+
 * SD_ENESITSFSZ
 
  SpeechDat.  A superset of sets EN, ES, IT, SF and SZ
@@ -44,10 +62,18 @@
 * MEDIAPARL
 * SA_EN
 * SD_EN
-* SD_ES
-* SD_IT
-* SD_IT_wo@
 
+ SpeechDat English (basically SAMPA)
+
+* SD_ES
+
+ SpeechDat Spanish (basically SAMPA)
+
+* SD_IT
+
+ SpeechDat Italian (basically SAMPA)
+
+* SD_IT_wo@
 * LEXIQUE3.80
 
  French language phoneset in LEXIQUE3.90 dictionary
@@ -62,6 +88,8 @@
 
 * BDLEX50_noN
 * SD_SF
+
+ SpeechDat French (basically SAMPA) 
 
 * FESTIVAL_DE
 
@@ -105,6 +133,9 @@
  A version of PhonoLex used in the MediaParl project
 
 * SD_SZ
+
+ SpeechDat Swiss German (basically SAMPA)
+
 * SD_NO
 * SD_FI
 * SD_EL
