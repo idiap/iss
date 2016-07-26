@@ -31,9 +31,16 @@
 
 * CGN-Dutch
 * AMI-v0
+
+ The phone set used in the AMI & AMIDA projects.  It's basically GAM with dx
+ removed.
+
 * HIWIRE
 * Isizulu
 * SD_ENESITSFSZ
+
+ SpeechDat.  A superset of sets EN, ES, IT, SF and SZ
+
 * MEDIAPARL
 * SA_EN
 * SD_EN
@@ -50,10 +57,10 @@
  French language festival's voices phoneset
 
 * BDLEX50
-* BDLEX50_noN
 
  French language BDLex
 
+* BDLEX50_noN
 * SD_SF
 
 * FESTIVAL_DE
@@ -89,14 +96,19 @@
 * PHONOLEX_EXT
 * PHONOLEX
 
- German language phoneset of PHONOLEX dictionary and extended version
+ German language phoneset of PHONOLEX dictionary
 
 * PHONOLEX_DE
 * PHONOLEX_GP
 * PHONOLEX_MP
+
+ A version of PhonoLex used in the MediaParl project
+
 * SD_SZ
 * SD_NO
 * SD_FI
 * SD_EL
 * SD_SV
 * VS_DE
+
+ Walliserdeutsch
