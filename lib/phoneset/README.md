@@ -1,27 +1,33 @@
 # List of phone-sets in this directory
 
 * IPA
-The IPA representation of the phone using IPA symbols
+
+ The IPA representation of the phone using IPA symbols
 
 * SAMPA
-The IPA representation using SAMPA, X-SAMPA and SAMPROSA symbols.
+
+ The IPA representation using SAMPA, X-SAMPA and SAMPROSA symbols.
 
 * GAM
-Unilex General American
+
+ Unilex General American
 
 * Sphinx2
 * Afrikaans
 * Afrikaans-Dutch
 * ARPAbet
-Used in WSJ amongst others.
+
+ Used in WSJ amongst others.
 
 * UNISYN
 * CMUbet-MONC
-The subset of the CMU dictionary used by MONC, the Multichannel
-OGI Numbers Corpus
+
+ The subset of the CMU dictionary used by MONC, the Multichannel OGI Numbers
+ Corpus
 
 * CMUbet
-The CMU dictionary with stress marks removed
+
+ The CMU dictionary with stress marks removed
 
 * CGN-Dutch
 * AMI-v0
@@ -37,7 +43,8 @@ The CMU dictionary with stress marks removed
 * LEXIQUE3.80
 * FESTIVAL_FR
 * BDLEX50
-French language BDLex
+
+ French language BDLex
 
 * BDLEX50_noN
 * SD_SF
