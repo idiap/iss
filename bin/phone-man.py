@@ -7,14 +7,18 @@
 # Author(s):
 #   David Imseng, July 2010
 #   Phil Garner, March 2013
-#
+#   Bastian Schnell, July 2017
 
 #
 # Parse Phone-Set file in csv format and create question sets
 #
-import csv, sys, os, re
+import csv
+import sys
+import os
+import re
 from copy import copy
 from optparse import OptionParser, Option, OptionValueError
+
 
 def check_dict(option, opt, value):
     try:
@@ -27,16 +31,18 @@ def check_dict(option, opt, value):
     except ValueError:
         raise OptionValueError("option %s: invalid input %r" % (opt, value))
 
+
 class MyOption (Option):
     TYPES = Option.TYPES + ("dict",)
     TYPE_CHECKER = copy(Option.TYPE_CHECKER)
     TYPE_CHECKER["dict"] = check_dict
 
+
 # Find the installation root
 issRoot = os.environ.get("ISSROOT")
 if issRoot == None:
     # Assume we are run as $ISSROOT/bin/phone-man.py
-    issRoot = sys.argv[0]
+    issRoot = os.path.abspath(sys.argv[0])
     for i in range(2):
         issRoot = os.path.split(issRoot)[0]
     print("ISSROOT guessed to be", issRoot)
@@ -47,7 +53,7 @@ parser.add_option(
     "-f", "--file", dest="qsOutName", metavar="FILE", type="string",
     help="questions to FILE [stdout will be used if not specified]"
 )
-#parser.add_option(
+# parser.add_option(
 #    "-c", "--config", dest="tiConfigName", metavar="FILE", type="string",
 #    help="write mktri.hed to FILE [nothing written if not specified]"
 #)
@@ -68,7 +74,8 @@ parser.add_option(
 )
 parser.add_option(
     "-m", "--mapping", dest="map", metavar="PHONESET", type="dict",
-    help='Use the specified mapping (to convert some phoneme symbols).  Different mappings should be separated by ";" and the values with "," (i.e. 2,_2_;9,_9_).'.format(map)
+    help='Use the specified mapping (to convert some phoneme symbols).  Different mappings should be separated by ";" and the values with "," (i.e. 2,_2_;9,_9_).'.format(
+        map)
 )
 parser.add_option(
     "-t", "--treeth", dest="treeThres", metavar="treeThres",
@@ -83,23 +90,30 @@ parser.add_option(
     "-F", "--full", dest="full", action="store_true", default=False,
     help='Output questions for full context (i.e., for TTS).  Note that this does not imply -q, for TTS you probably need both.'
 )
+parser.add_option(
+    "-r", "--reduced", dest="reduced", action="store_true", default=False,
+    help='Use reduced set of questions. Remove questions unnecessary for DNN TTS.'
+        +'u.g. Use only C_Vowel and not L_Vowel and R_Vowel.'
+        +'Also use the reduced set of static questions.'
+)
+
 (options, args) = parser.parse_args()
 
 # Set options depending on options
 if(options.qsOutName):
     print('Question set file: {}.'.format(options.qsOutName))
-    qsOutName = options.qsOutName
-    qsOut = open(qsOutName, 'w')
+    options.qsOutName = options.qsOutName
+    options.qsOut = open(options.qsOutName, 'w')
 else:
-    qsOutName = "stdout"
-    qsOut = None
+    options.qsOutName = "stdout"
+    options.qsOut = None
     print('No filename set for the question file. Printing to stdout.')
 
-#if(options.tiConfigName):
+# if(options.tiConfigName):
 #    print('mktri.hed file: {}.'.format(options.tiConfigName))
 #    tiConfigName = options.tiConfigName
 #    tiConfig = open(tiConfigName, 'w')
-#else:
+# else:
 #    tiConfigName = "stdout"
 #    tiConfig = None
 #    print('No filename set for the mktri.hed file. Printing to stdout.')
@@ -111,17 +125,24 @@ else:
     map = dict()
     print('No mapping specified')
 
+
 class PhoneSets:
     """
     Handles phone sets stored in the PhoneSets spreadsheet
     """
-    def __init__(self, file, quin=False, full=False):
+
+    def __init__(self, file, quin=False, full=False, reduced=False):
         self.quin = quin
+        self.reduced = reduced
 
         self.formatTri = {
             'L': '{}-*',
             'C': '*-{}+*',
             'R': '*+{}'
+        }
+
+        self.formatTirReduced = {
+            'C': '*-{}+*'
         }
 
         self.formatQuin = {
@@ -132,6 +153,10 @@ class PhoneSets:
             'RR': '*={}'
         }
 
+        self.formatQuinReduced = {
+            'C':  '*-{}+*',
+        }
+        
         # Full context requires modifying the RR or R phone contexts
         if full:
             self.formatTri['R'] += "@*"
@@ -139,7 +164,7 @@ class PhoneSets:
 
         # Read the csv file
         freader = csv.DictReader(open(file, 'r'))
-        self.scolumn = freader.fieldnames.index("question count")+1
+        self.scolumn = freader.fieldnames.index("question count") + 1
 
         # Get the counts (second column; the first has the fieldnames.)
         try:
@@ -148,7 +173,7 @@ class PhoneSets:
             self.SAMPAcount = row['SAMPA']
             print('Expecting {} IPA entries and {} SAMPA entries.'.format(
                   self.IPAcount, self.SAMPAcount)
-            )
+                  )
         except csv.Error as e:
             sys.exit('%s, line %d: %s' % (file, freader.line_num, e))
 
@@ -157,10 +182,10 @@ class PhoneSets:
         self.data = []
         try:
             for row in freader:
-                if ( (len(row['SAMPA']) == 0) and
-                     (self.data.len < SAMPAcount) ):
+                if ((len(row['SAMPA']) == 0) and
+                        (len(self.data) < int(self.SAMPAcount))):
                     sys.exit('Empty SAMPA symbol in file %s, at line %d'
-                    % (file, freader.line_num))
+                             % (file, freader.line_num))
                 self.data.append(row)
         except csv.Error as e:
             sys.exit('file %s, line %d: %s'
@@ -172,7 +197,7 @@ class PhoneSets:
         # Array of phone classes
         self.classes = freader.fieldnames[self.scolumn:]
 
-        #if not options.ps in freader.fieldnames:
+        # if not options.ps in freader.fieldnames:
         #    sys.exit('phone-set "%s" not found.' %(options.ps))
 
     def _map(self, phoneme):
@@ -206,7 +231,7 @@ class PhoneSets:
         return '"' + formatStr.format(phone) + '"'
 
     def _format_phones(self, formatStr, phones):
-        formats = { self._format_phone(formatStr, p) for p in phones }
+        formats = {self._format_phone(formatStr, p) for p in phones}
         str = ','.join(formats)
         return str
 
@@ -231,15 +256,25 @@ class PhoneSets:
             sel_phonemes = self.get_class_phoneset(ps, question)
 
             # If there are phones in the question, return the questions
-            if (len(sel_phonemes) > 0 ):
+            if (len(sel_phonemes) > 0):
                 if self.quin:
-                    questions += self._questions(
-                        self.formatQuin, question, sel_phonemes
-                    )
+                    if self.reduced:
+                        questions += self._questions(
+                            self.formatQuinReduced, question, sel_phonemes
+                        )
+                    else:
+                        questions += self._questions(
+                            self.formatQuin, question, sel_phonemes
+                        )
                 else:
-                    questions += self._questions(
-                        self.formatTri, question, sel_phonemes
-                    )
+                    if self.reduced:
+                        questions += self._questions(
+                            self.formatTriReduced, question, sel_phonemes
+                        )
+                    else:
+                        questions += self._questions(
+                            self.formatTri, question, sel_phonemes
+                        )
         return questions
 
     def get_phone_questions(self, ps):
@@ -247,9 +282,11 @@ class PhoneSets:
         questions = []
         for phoneme in self.get_phoneset(ps):
             if self.quin:
-                questions +=self._questions(self.formatQuin, phoneme, [phoneme])
+                questions += self._questions(self.formatQuin,
+                                             phoneme, [phoneme])
             else:
-                questions += self._questions(self.formatTri, phoneme, [phoneme])
+                questions += self._questions(self.formatTri,
+                                             phoneme, [phoneme])
         return questions
 
     def get_sil_questions(self, sil):
@@ -288,8 +325,8 @@ class PhoneSets:
         return questions
 
     def _tie(self, threshold, phoneme, state):
-        phoVar = {'"'+phoneme+'"', '"*-'+phoneme+'+*"',
-                  '"*-'+phoneme+'"', '"'+phoneme+'+*"'}
+        phoVar = {'"' + phoneme + '"', '"*-' + phoneme + '+*"',
+                  '"*-' + phoneme + '"', '"' + phoneme + '+*"'}
         str = 'TB {} "ST_{}_{}"\t{{({}).state[{}]}}\n'.format(
             threshold, phoneme, state, ','.join(phoVar), state
         )
@@ -322,7 +359,7 @@ class PhoneSets:
         for pclass in self.classes:
             if vowelre.match(pclass):
                 phones = self.get_class_phoneset(ps, pclass)
-                if (len(phones) > 0 ):
+                if (len(phones) > 0):
                     questions += self._questions(formatSyl, pclass, phones)
         for phoneme in self.get_class_phoneset(ps, "Vowel"):
             questions += self._questions(formatSyl, phoneme, [phoneme])
@@ -333,19 +370,24 @@ class PhoneSets:
         lines = f.readlines()
         return lines
 
+
 #
 # The main program
 #
+print(options.qsOutName)
 sil = options.sil.split(',')
-ps = PhoneSets(options.csvFile, options.quin, options.full)
+ps = PhoneSets(options.csvFile, options.quin, options.full, options.reduced)
 with open(options.qsOutName, 'w') as f:
     f.writelines(ps.get_class_questions(options.ps))
     f.writelines(ps.get_phone_questions(options.ps))
     if options.full:
         # Basically for TTS
-        f.writelines(ps.get_syl_vowel_questions(options.ps))
         f.writelines(ps.get_full_sil_questions(sil))
-        static = "{}/lib/phoneset/questions-static.txt".format(issRoot)
+        f.writelines(ps.get_syl_vowel_questions(options.ps))
+        if options.reduced:
+            static = "{}/lib/phoneset/questions-static_reduced.txt".format(issRoot)
+        else:
+            static = "{}/lib/phoneset/questions-static.txt".format(issRoot)
         f.writelines(ps.get_static_questions(static))
     else:
         # Basically for ASR
