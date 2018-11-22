@@ -1,4 +1,4 @@
-#!/idiap/resource/software/python/3.1/i686/bin/python3
+#!/usr/bin/python3
 #
 # Convert Dictionary
 # David Imseng, November 2010
